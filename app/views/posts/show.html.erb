@@ -1,0 +1,39 @@
+<% @post.categories.each do |category| %>
+  <span class="badge">
+    <%= link_to "#{category.name}", category_path(category) %>
+  </span>
+<% end %>
+
+<h3> <%= link_to @post.title, format_url(@post.url) %> </h3>
+
+<p> <%= @post.description %> </p>
+
+<p> <%= "Create at #{format_timestamp(@post.created_at)}" %>
+
+<p> <%= link_to "Edit Post", edit_post_path(@post) %> </p>
+
+<hr />
+
+<h4> Comments </h4>
+
+<ul>
+  <% @post.comments.each do |comment| %>
+    <li>  
+      <%= comment.body %> 
+      <!-- "by #{comment.user.username})" %> -->
+    </li>
+  <% end %>
+</ul>
+
+<hr />
+
+<h4> Add New Comment </h4>
+
+<%= render 'shared/errors', obj: @comment %>
+
+<%= form_for [@post, @comment] do |f| %>
+  <%= f.text_area :body %>
+  <br />
+  <%= f.submit %>
+<% end %>
+

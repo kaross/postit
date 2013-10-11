@@ -1,0 +1,17 @@
+<%= render 'shared/errors', obj: @post %>
+
+<%= form_for(@post) do |f| %>
+  <%= collection_select(:post, :category_ids, Category.all, :id, :name, 
+        {:selected => @post.categories.map{|cat| cat.id} }, {:multiple => true}) %>
+  <br />
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <br />
+  <%= f.label :url %>
+  <%= f.text_field :url %>
+  <br />
+  <%= f.label :description %>
+  <%= f.text_area :description %>
+  <br />
+  <%= f.submit %>
+<% end %>
