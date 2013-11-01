@@ -4,6 +4,11 @@ module ApplicationHelper
   end
 
   def format_timestamp(ts)
-    ts.strftime("%m/%d/%Y %l:%M%P")
+    if logged_in? && !current_user.timezone.blank?
+      ts = ts.in_time_zone(current_user.timezone)
+    end
+
+    ts.strftime("%m/%d/%Y %l:%M%P %Z")
   end
+
 end

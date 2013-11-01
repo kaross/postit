@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tealeaf Academy - Postit</title>
+    <title>Postit</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <%= stylesheet_link_tag "application", :media => "all" %>
@@ -12,9 +12,9 @@
     <%= yield(:head) %>
   </head>
   <body>
-    <header>
+    <header id='header-bar'>
       <div class="navbar">
-        <div class="navbar-inner">
+        <div class="navbar-inner" >
           <div class="container">
             <%= render 'layouts/navigation' %>
           </div>

@@ -8,32 +8,53 @@
 
 <p> <%= @post.description %> </p>
 
-<p> <%= "Create at #{format_timestamp(@post.created_at)}" %>
+<p> <%= "Create at #{format_timestamp(@post.created_at)} by #{@post.creator.username}" %>
 
-<p> <%= link_to "Edit Post", edit_post_path(@post) %> </p>
+<% if update_access(@post) or current_user.admin? %>
+  <p> <%= link_to "Edit Post", edit_post_path(@post) %> </p>
+<% end %>
+
+<hr />
+
+<% if logged_in? %>
+  <h4> Add New Comment </h4>
+
+  <%= render 'shared/errors', obj: @comment %>
+
+  <%= form_for [@post, @comment] do |f| %>
+    <%= f.text_area :body %>
+    <br />
+    <%= f.submit %>
+  <% end %>
+<% end %>
 
 <hr />
 
 <h4> Comments </h4>
 
-<ul>
-  <% @post.comments.each do |comment| %>
-    <li>  
-      <%= comment.body %> 
-      <!-- "by #{comment.user.username})" %> -->
-    </li>
-  <% end %>
-</ul>
+<% @post.comments.each do |comment| %>
+  <table class='table'>
+    <tr class='info'>
+      <td class='span1'>
+        <% if logged_in? %>
+          <%= link_to vote_post_comment_path(@post, comment, vote: 'true'), method: 'POST', remote: true do %>
+            <i class='icon-plus'></i>
+          <% end %>
+        <% end %>
+        <span id="comment_<%= comment.id %>_votes"><%= total_votes(comment) %></span>
+        <% if logged_in? %>
+          <%= link_to vote_post_comment_path(@post, comment, vote: 'false'), method: 'POST', remote: true do %>
+            <i class='icon-minus'></i>
+          <% end %>
+        <% end %>
+        &nbsp
+        <%= comment.body %> 
+      </td>
 
-<hr />
-
-<h4> Add New Comment </h4>
-
-<%= render 'shared/errors', obj: @comment %>
-
-<%= form_for [@post, @comment] do |f| %>
-  <%= f.text_area :body %>
-  <br />
-  <%= f.submit %>
+      <td class='span1'>
+        <%= "by #{comment.creator.username} at #{format_timestamp(comment.created_at)}" %>
+      </td>
+    </tr>
+  </div>
 <% end %>
 
